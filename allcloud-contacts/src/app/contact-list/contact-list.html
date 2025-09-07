@@ -1,0 +1,58 @@
+<div class="contact-list-container">
+  <div class="header">
+    <h1>AllCloud Contacts</h1>
+    <div class="header-actions">
+      <button class="btn btn-secondary" (click)="addContact()">
+        Add Contact
+      </button>
+      <button
+        class="btn btn-primary"
+        (click)="generateRandomContacts()"
+        [disabled]="loading()"
+      >
+        {{ loading() ? "Loading..." : "Generate Random Contacts" }}
+      </button>
+    </div>
+  </div>
+
+  @if (error()) {
+  <div class="error-message">
+    {{ error() }}
+    <button (click)="loadContacts()">Try Again</button>
+  </div>
+  } @if (loading() && contacts().length === 0) {
+  <div class="loading">Loading contacts...</div>
+  } @if (contacts().length > 0) {
+  <div class="contacts-grid">
+    @for (contact of contacts(); track contact.id) {
+    <div class="contact-card" (click)="viewContact(contact.id)">
+      <div class="contact-avatar">
+        <img
+          [src]="
+            contact.image_url ||
+            'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI2RkZCIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0Ij5BdmF0YXI8L3RleHQ+PC9zdmc+'
+          "
+          [alt]="contact.name"
+          (error)="
+            $event.target.src =
+              'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI2RkZCIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0Ij5BdmF0YXI8L3RleHQ+PC9zdmc+'
+          "
+        />
+      </div>
+      <div class="contact-details">
+        <h3>{{ contact.name }}</h3>
+        <p class="email">{{ contact.email }}</p>
+        <p class="phone">{{ contact.phone }}</p>
+        @if (contact.full_address) {
+        <p class="address">{{ contact.full_address }}</p>
+        }
+      </div>
+    </div>
+    }
+  </div>
+  } @if (contacts().length === 0 && !loading()) {
+  <div class="empty-state">
+    <p>No contacts found. Please generate some contacts.</p>
+  </div>
+  }
+</div>

@@ -1,0 +1,13 @@
+<div class="app-container">
+  <div class="offline-indicator" [class.offline]="!offlineService.isOnline()">
+    {{ offlineService.isOnline() ? "🟢 Online" : "🔴 Offline" }}
+    @if (offlineService.pendingOperations().length > 0) {
+    <span class="pending-count">
+      ({{ offlineService.pendingOperations().length }} pending)
+    </span>
+    }
+  </div>
+  <main class="app-main">
+    <router-outlet></router-outlet>
+  </main>
+</div>

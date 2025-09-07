@@ -1,0 +1,132 @@
+<div class="contact-form-container">
+  <div class="header">
+    <button class="back-btn" (click)="cancel()">
+      ← {{ isEditMode() ? "Back to Contact" : "Back to Contacts" }}
+    </button>
+  </div>
+
+  <div class="form-card">
+    <div class="form-header">
+      <h1>{{ isEditMode() ? "Edit Contact" : "Add New Contact" }}</h1>
+    </div>
+
+    @if (error()) {
+    <div class="error-message">
+      {{ error() }}
+    </div>
+    }
+
+    <form
+      [formGroup]="contactForm"
+      (ngSubmit)="onSubmit()"
+      class="contact-form"
+    >
+      <div class="form-group">
+        <label for="name">Name *</label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          placeholder="Enter full name"
+          [class.error]="getFieldError('name')"
+        />
+        @if (getFieldError('name')) {
+        <span class="error-text">{{ getFieldError("name") }}</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="Enter email address"
+          [class.error]="getFieldError('email')"
+        />
+        @if (getFieldError('email')) {
+        <span class="error-text">{{ getFieldError("email") }}</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone *</label>
+        <input
+          type="tel"
+          id="phone"
+          formControlName="phone"
+          placeholder="Enter phone number"
+          [class.error]="getFieldError('phone')"
+        />
+        @if (getFieldError('phone')) {
+        <span class="error-text">{{ getFieldError("phone") }}</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="cell">Cell Phone</label>
+        <input
+          type="tel"
+          id="cell"
+          formControlName="cell"
+          placeholder="Enter cell phone number"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="full_address">Address</label>
+        <textarea
+          id="full_address"
+          formControlName="full_address"
+          placeholder="Enter full address"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input
+          type="number"
+          id="age"
+          formControlName="age"
+          placeholder="Enter age"
+          min="1"
+          max="120"
+          [class.error]="getFieldError('age')"
+        />
+        @if (getFieldError('age')) {
+        <span class="error-text">{{ getFieldError("age") }}</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="image_url">Profile Image URL</label>
+        <input
+          type="url"
+          id="image_url"
+          formControlName="image_url"
+          placeholder="Enter image URL (optional)"
+        />
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="cancel()">
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="loading() || contactForm.invalid"
+        >
+          {{
+            loading()
+              ? "Saving..."
+              : isEditMode()
+              ? "Update Contact"
+              : "Create Contact"
+          }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

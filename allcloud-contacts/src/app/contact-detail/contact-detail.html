@@ -1,0 +1,84 @@
+<div class="contact-detail-container">
+  <div class="header">
+    <button class="back-btn" (click)="goBack()"><- Back to Contacts</button>
+  </div>
+
+  @if(loading()){
+  <div class="loading"><p>Loading contact details...</p></div>
+  } @if(error()){
+  <div class="error-message">
+    {{ error() }}
+    <button class="btn" (click)="goBack()">Go Back</button>
+  </div>
+  } @if(contact()){
+  <div class="contact-detail-card">
+    <div class="contact-header">
+      <div class="contact-avatar-large">
+        <img
+          [src]="getContactImage(contact()!)"
+          [alt]="contact()!.name"
+          (error)="$event.target.src = getDefaultAvatar()"
+        />
+      </div>
+      <div class="contact-info">
+        <h1>{{ contact()!.name }}</h1>
+        @if(contact()!.full_address){
+        <p class="location">{{ contact()!.full_address }}</p>
+        }
+      </div>
+    </div>
+
+    <div class="contact-details">
+      <div class="detail-actions">
+        <button class="btn btn-primary" (click)="editContact()">
+          Edit Contact
+        </button>
+        <button
+          class="btn btn-danger"
+          (click)="deleteContact()"
+          [disabled]="deleting()"
+        >
+          {{ deleting() ? "Deleting..." : "Delete Contact" }}
+        </button>
+      </div>
+      <div class="detail-section">
+        <h3>Contact Information</h3>
+        <div class="detail-item">
+          <span class="label">Email:</span>
+          <span class="value email">{{ contact()!.email }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Phone:</span>
+          <span class="value phone">{{ contact()!.phone }}</span>
+        </div>
+        @if(contact()!.cell){
+        <div class="detail-item">
+          <span class="label">Cell:</span>
+          <span class="value phone">{{ contact()!.cell }}</span>
+        </div>
+        }
+      </div>
+
+      @if(contact()!.age){
+      <div class="detail-section">
+        <h3>Personal Information</h3>
+        <div class="detail-item">
+          <span class="label">Age:</span>
+          <span class="value">{{ contact()!.age }} years old</span>
+        </div>
+      </div>
+      } @if(contact()!.registration_date){
+      <div class="detail-section">
+        <h3>Account Information</h3>
+        <div class="detail-item">
+          <span class="label">Registered:</span>
+          <span class="value">{{
+            contact()!.registration_date | date : "mediumDate"
+          }}</span>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  }
+</div>
